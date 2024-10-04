@@ -1,0 +1,391 @@
+En una empresa industrial de biotecnología donde se producen antígenos para el desarrollo de vacunas, es de vital importancia optimizar el proceso de producción. Se describe a continuación dicho proceso de producción de una forma generalizada y a alto nivel.
+
+Una vacuna consta de un antígeno (que es el componente activo) y otros componentes (estabilizadores, adyuvantes, excipientes, etc). En este caso nos centramos sólo en la producción del antígeno para un proceso microbiano. Para producirlo, se parte de una pequeña cantidad de un microrganismo, que se multiplica utilizando medios de cultivo y luego se procesa para conseguir el antígeno deseado.
+
+Fases del proceso productivo del antígeno:
+
+Preinóculo: etapa inicial de crecimiento de los microorganismos en un pequeño volumen de medio de cultivo antes de ser transferidos a un volumen mayor. Es un proceso manual y se realiza normalmente en recipientes de pequeño volumen, como frascos de cristal, dónde no se dispone de mediciones en tiempo real.
+Inóculo: el inóculo implica la mezcla de una cantidad determinada del preinóculo con medio de cultivo estéril para lograr la multiplicación de los microorganismos hasta un volumen suficiente para iniciar una producción a escala industrial. Es la última etapa antes de realizar el cultivo de producción y se realiza en biorreactores, tanques agitados de geometría determinada dónde existe, como mínimo, un control básico de algunas variables de proceso (p.ej. temperatura, pH, …).
+Cultivo productivo: es el proceso en el que el inóculo se mezcla de nuevo con medio de cultivo estéril para lograr la amplificación final del microorganismo hasta la cantidad industrial requerida y, a su vez, lograr la producción del producto de interés, normalmente una biomolécula. Este proceso se realiza en biorreactores con un nivel de control e instrumentación habitualmente superior al disponible en la etapa de inóculo. Las variables de proceso más habituales son la temperatura, pH, oxígeno disuelto y agitación; todas ellas se controlan a sus valores óptimos para lograr la mayor productividad.
+Centrifugación: una vez que se ha alcanzado la concentración deseada de antígeno en el cultivo, se lleva a cabo la centrifugación. Este proceso consiste en aplicar fuerza centrífuga para separar los componentes del cultivo en dos fases, una sólida y una líquida. La centrifugación constituye la primera fase de separación del producto de interés del resto de contaminantes, como por ejemplo el medio de cultivo gastado, y constituye habitualmente el primer paso en el tren de purificación.
+Purificación adicional: después de la centrifugación, se pueden realizar procesos de separación adicionales para eliminar cualquier contaminante y obtener un antígeno altamente puro y seguro para su uso en la vacuna.
+Cada tipo de antígeno seguirá un proceso distinto y adecuado a su naturaleza. En general, hay una gran diversidad de procesos productivos según el tipo de antígeno que se desea obtener (bacterias, virus, proteína recombinante, mRNA, VLP, …) por lo que es imposible describir resumidamente todos ellos. Esta diversidad afecta tanto a la expansión del vector biológico (bacteria, células de mamífero, …), lo que se conoce como “upstream”, como a las etapas del proceso de purificación o “downstream”. Una vez se obtiene el antígeno purificado, se puede utilizar para formular la vacuna una vez controlada su calidad según unos parámetros preestablecidos.
+
+
+Lotes encadenados: si el título del cultivo es suficiente, una parte del cultivo no se centrifuga, se deja en el mismo biorreactor, y se vuelve a introducir medio de cultivo para iniciar un nuevo cultivo. Este segundo cultivo es una nueva OF, donde los datos de las fases anteriores coincidirán con la OF inicial. Se puede repetir el proceso, mantener una parte del cultivo para una tercera OF. No puede haber una cuarta OF.
+
+El objetivo
+Debido al impacto en la sociedad de optimizar y mejorar el proceso, ya que fruto del mismo se desarrollarán mejores vacunas, se hace necesario disponer de una previsión de la concentración del producto en el antígeno final después de todas las fases.
+
+Dado lo anterior y partiendo de amplios datasets de ensayos históricos, te retamos a crear el mejor modelo de predicción de producción que pueda estimar el valor de concentración (producto1) en el antígeno final tras la conclusión de todas las fases descritas el apartado anterior, y de esta forma Identificar los parámetros de proceso que tienen más impacto sobre el título del producto fabricado para mejoras futuras en el proceso.
+
+Datasets entrenamiento
+El reto hace referencia sólo a cuatro fases del proceso productivo del antígeno de interés:
+
+• Inóculo
+• Cultivo productivo
+• Centrifugación 1
+• Centrifugación 2
+
+Se disponen de datos a tiempo real de cada una de las fases que se quieren analizar, además de datos de los controles de calidad que se realizan en diferentes fases del proceso y sobre el producto resultante.
+
+Se proporcionan dos tipos de tablas de datos: de lote y de evolución. En cualquiera de las tablas, las filas son observaciones y las columnas variables de proceso.
+
+En las tablas de datos de lote, cada fila corresponde a un lote y los valores de las variables describen una propiedad de ese lote en un momento de tiempo concreto, por ejemplo, al final del cultivo o un valor promedio característico de ese lote, por ejemplo, el valor de turbidez obtenido de la centrifugación.
+
+En las tablas de datos de evolución, cada fila corresponde a una observación en un tiempo concreto dentro de la ejecución de un lote. Por lo tanto la tabla está formada por bloques de filas que corresponden a un lote y dentro de cada bloque de filas cada una de ellas representa los valores de las variables de proceso (columnas) en un momento determinado de la evolución del cultivo.
+
+
+
+por favor responde solo OK por el momento, posteriormente te compartire la informacion especifica de los datasets.
+
+
+
+
+###############################
+
+
+Dataset Información General (OF 123456.xls)
+
+Se define una Orden de Fabricación (OF) para cada producción del antígeno. La OF está compuesta de varias fases, entre las que se encuentran las fases de interés. La OF identifica cada lote que se produce. Para el reto planteado se adjunta información de las OF del antígeno de estudio producidas en los últimos meses.
+
+El antígeno de estudio se identifica con el código 123456. En la tabla “OF 123456” hay el listado de las OF de estudio, las OF o lotes que no estén en esta tabla no se deben tener en cuenta. Esta tabla contiene la siguiente información:
+
+Campo	Descripción
+Orden	Identificador de la OF
+Número de material	Identificador del material, del antígeno producido
+Texto breve material	Descripción del antígeno
+Lote	Número de lote producido. Igual que el número de OF, la relación de material y lote también identifica cada producción
+Fecha de inicio real	Fecha de inicio real de la OF
+Fecha de fin real	Fecha de fin real de la OF
+Cantidad entregada	Volumen de antígeno producido. El reto no trata de maximizar el volumen, sino el título (la calidad) del antígeno
+Unidad de medida	Unidad de medida (litros)
+
+Datasets Fases: Preinóculo, Inóculo y Cultivo Final (Fases producción.xls)
+
+En la fase de preinóculo, se hace crecer el mismo microrganismo en 3 frascos diferentes. Para la fase de inoculación, se seleccionan los dos frascos con el pH más bajo, y se utilizan para esta fase. El tercer frasco se desecha.
+
+Los datos de lote para el preinóculo presentes en el dataset son los siguientes:
+
+Campo	Descripción
+Lote	Número de lote producido. Igual que el número de OF, la relación de material y lote también identifica cada producción
+Fecha/hora inicio	Fecha de inicio real de la fase
+Fecha/hora fin	Fecha de fin real de la fase
+pH línea 1	Valor del pH del frasco 1 al finalizar la fase
+pH línea 2	Valor del pH del frasco 2 al finalizar la fase
+pH línea 2	Valor del pH del frasco 2 al finalizar la fase
+pH línea 3	Valor del pH del frasco 3 al finalizar la fase
+Turbidez línea 1	Valor de turbidez del frasco 1 al finalizar la fase
+Turbidez línea 2	Valor de turbidez del frasco 2 al finalizar la fase
+Turbidez línea 3	Valor de turbidez del frasco 3 al finalizar la fase
+Línea 1 utilizada	Si valor 1, se utiliza frasco 1 para la fase de inoculación
+Línea 2 utilizada	Si valor 1, se utiliza frasco 2 para la fase de inoculación
+Línea 3 utilizada	Si valor 1, se utiliza frasco 3 para la fase de inoculación
+Los datos de lote para el inóculo presentes en el dataset son los siguientes:
+
+Campo	Descripción
+Lote	Número de lote producido. Igual que el número de OF, la relación de material y lote también identifica cada producción
+ID biorreactor	Código del biorreactor
+Fecha/hora inicio	Fecha de inicio real de la fase
+Fecha/hora fin	Fecha de fin real de la fase
+Volumen de cultivo	Volumen de medio utilizado durante el cultivo
+Turbidez inicio cultivo	Turbidez a tiempo 0
+Turbidez final cultivo	Turbidez a final de cultivo
+Viabilidad final cultivo	Indicador de células vivas a final de cultivo
+Los datos de lote para los cultivos productivos presentes en el dataset son los siguientes:
+
+Campo	Descripción
+Lote	Número de lote producido. Igual que el número de OF, la relación de material y lote también identifica cada producción
+Orden en el encadenado	Indica la posición relativa de cada lote en una secuencia de encadenados tomando valores de 1, 2 o 3
+Lote parental	En caso de ser encadenado, indica cuál es el lote del que es dependiente. Si orden en el encadenado == 1, entonces Lote parental == NA
+ID biorreactor	Código del biorreactor
+Fecha/hora inicio	Fecha de inicio real de la fase
+Fecha/hora fin	Fecha de fin real de la fase
+Volumen de inóculo	Volumen de inóculo utilizado para iniciar el cultivo.
+Turbidez inicio cultivo	Turbidez a tiempo 0
+Turbidez final cultivo	Turbidez a final de cultivo
+Viabilidad final cultivo	Indicador de células vivas a final de cultivo
+ID centrífuga	Código de la centrífuga utilizada para procesar el cultivo
+Centrifugación 1 turbidez	Turbidez del producto recogido de la primera centrifugación
+Centrifugación 2 turbidez	Turbidez del producto recogido de la segunda centrifugación
+Producto 1	Concentración del producto 1 en el antígeno final después de todas las fases
+Producto 2	Concentración del producto 2 en el antígeno final después de todas las fases
+Tanto en la fase de inóculo como en la de cultivos productivos, para relacionar este dataset con los datesets de Biereactores tendremos que hacerlo a partir del ID biorreactor y las fechas/horas de inicio y fin.
+
+Datasets Biorreactores (biorreactor XXXXX.xls)
+
+Los frascos de preinóculo seleccionados se introducen, junto con medio de cultivo, en un biorreactor de pequeño tamaño (códigos 13171, 13172, 14618). Para cada uno de estos equipos hay una tabla de evolución con los valores a tiempo real cada 15 min que contiene las siguientes variables:
+
+Campo	Descripción
+DateTime	Fecha y hora de registro de los valores
+xxx.Agitation_PV	Velocidad de agitación
+xxx.Air_Sparge_PV	Aporte de aire por sparger
+xxx.Biocontainer_Pressure_PV	Presión biorreactor
+xxx.DO_1_PV	Presión parcial oxígeno 1
+xxx.DO_2_PV	Presión parcial oxígeno 2
+xxx.Gas_Overlay_PV	Aire por cúpula
+xxx.Load_Cell_Net_PV	Peso
+xxx.pH_1_PV	pH cultivo
+xxx.pH_2_PV	pH cultivo
+xxx.PUMP_1_PV	Adición antiespumante
+xxx.PUMP_1_TOTAL	Total antiespumante
+xxx.PUMP_2_PV	Adición solución base
+xxx.PUMP_2_TOTAL	Total solución base
+xxx.Single_Use_DO_PV	Presión parcial oxígeno
+xxx.Single_Use_pH_PV	pH cultivo
+xxx.Temperatura_PV	Temperatura cultivo
+Una vez completado el crecimiento del inóculo se traspasa el volumen necesario a un Biorreactor de producción (códigos 13169, 13170, 14614, 14615, 14616, 14617). Los datos a tiempo real de estos equipos son los mismos que en los biorreactores de pequeño tamaño (ver tabla anterior).
+
+Dataset Cinéticos IPC (Cinéticos IPC.xls)
+
+Durante el proceso de inóculos, se hacen controles en proceso donde se analizan algunas variables de proceso para determinar la evolución del cultivo (Excel “Cinéticos IPC” pestaña Inóculos):
+
+Campo	Descripción
+Lote	Número de lote producido. Igual que el número de OF, la relación de material y lote también identifica cada producción
+Fecha	Fecha y hora que se realiza la observación
+Turbidez	Valor de turbidez en el momento de la observación
+Viabilidad	Valor de viabilidad en el momento de la observación
+Durante la fase de cultivo, se hacen controles en proceso donde se analizan algunas variables de proceso para determinar la evolución del cultivo (Excel “Cinéticos IPC” pestaña Cultivos finales):
+
+Campo	Descripción
+Lote	Número de lote producido. Igual que el número de OF, la relación de material y lote también identifica cada producción
+Fecha	Fecha y hora que se realiza la observación
+Turbidez	Valor de turbidez en el momento de la observación
+Viabilidad	Valor de viabilidad en el momento de la observación
+Glucosa	Valor de glucosa en el momento de la observación
+Durante la centrifugación, se hacen controles en proceso donde se analizan algunas variables de proceso para determinar la evolución del cultivo (Excel “Cinéticos IPC” pestaña Centrifugación):
+
+Campo	Descripción
+Lote	Número de lote producido. Igual que el número de OF, la relación de material y lote también identifica cada producción
+Centrífuga	Equipo utilizado
+Centrifugada (1 o 2)	Indica si es la primera o segunda centrifugación
+Volumen centrifugado	Cantidad de producto centrifugado en el momento de la observación
+Turbidez	Valor de turbidez en el momento de la observación
+Datasets Fase de Centrifugación (Centrífuga XXXXX.xls / Horas inicio fin centrífugas.xls)
+
+El producto resultante de la fase de cultivo se centrifuga dos veces. Primero se centrifuga todo el cultivo (centrifugación 1), luego se diluye el producto centrifugado y se vuelve a centrifugar (centrifugación 2). Las dos centrifugaciones se realizan en la misma centrífuga. Los códigos de las centrífugas son: 12912, 14246, 17825.
+
+Para cada uno de estos equipos hay una tabla (Centrífuga XXXXX.xls) con los valores a tiempo real cada 15 min que contiene los datos de evolución:
+
+Campo	Descripción
+DateTime	Fecha y hora de registro de los valores
+xxx_CTF0101.EN_Parcial	Número de descargas parciales
+xxx_CTF0101.EN_Total	Número de descargas totales
+xxx_D01780551.PV	Apertura válvula agua maniobra
+xxx_D01906041.PV	Caudal
+xxx_D01916047.PV	Contrapresión
+xxx_D01916503.PV	Presión del agua de maniobra
+xxx_D01919022.PV	Velocidad de separación
+El archivo ”Horas inicio fin centrifugas.xlsx” contiene información sobre los tiempos de inicio/fin de esta fase. Puede haber producciones de otros materiales intercalados que no son OF del material de estudio (123456).
+
+Campo	Descripción
+Equipo	Identificador de la centrífuga utilizada
+Operación	Indica si es un evento de inicio o fin, y si es de la primera centrifugación o de la segunda.
+Orden	Identificador de la OF
+DateValue	Fecha y hora en el que se produce el evento de inicio o fin.
+
+Dataset Materias Primas Utilizadas (Movimientos componentes.xls)
+
+Contiene información sobre las materias primas utilizadas para la producción del medio de cultivo utilizado en las fases de producción. Estas materias primas se compran a proveedor, y se identifican con un Lote de proveedor. Cuando las materias primas se recepcionan en el almacén principal, se les asigna un número de lote interno que lo identifica en los procesos de producción. Un mismo Lote de proveedor puede corresponder a varios Lotes internos si se recepcionan en días diferentes.
+
+Los materiales se almacenan primero en el almacén principal y luego se trasladan al almacén de producción donde se almacenan hasta su uso en producción.
+
+Para un mismo lote participan distintos materiales y de cada material se pueden usar distintos lotes para completar la cantidad necesaria
+
+Campo	Descripción
+Lote	Número de lote producido. Igual que el número de OF, la relación de material y lote también identifica cada producción. A través de este campo cruzamos con el resto de datasets
+Material	Código de la materia prima utilizada
+Lote interno	Identificador de lote que se genera al recepcionar una mercancía de proveedor.
+Lote proveedor	Identificador que la da el proveedor a el lote que suministra
+Qty	Cantidad de producto utilizado
+Fecha recepción	Fecha en que se recibe el producto del proveedor y se almacena en el almacén principal.
+Fecha traslado	Fecha que el producto se traslada del almacén principal al almacén de producción.
+Dataset Temperaturas y Humedades (Temperaturas y humedades.xls)
+
+Contiene información respecto a las condiciones ambientales de los almacenes y las salas de producción.
+
+Campo	Descripción
+DateTime	Fecha y hora de registro de los valores
+06299_TI1302.PV	Temperatura sala biorreactores
+06299_MI1302.PV	Humedad sala biorreactores
+06299_TI1402.PV	Temperatura sala centrifugas
+06299_MI1402.PV	Humedad sala centrifugas
+07633_TI0601.PV	Temperatura almacén principal
+07633_HI0101.PV	Humedad almacén principal
+07781_TI1501.PV	Temperatura almacén producción
+07781_MI1501.PV	Humedad almacén producción
+Dataset test
+Se proporcionará los mismos datasets que para el entrenamiento acabados en “_test” pero no se dispondrá de los datos producto 1 y producto 2, recordemos que el producto 1 es la variable target del reto.
+
+###########################################
+
+de momento tengo esto en mi diagrama relacional, (estoy usando dbdiagram.io) 
+
+Table OF123456 {
+  Orden integer
+  Numero_de_material integer
+  Texto_breve_material string
+  Lote integer
+  Fecha_inicio_real timestamp
+  Fecha_fin_real timestamp
+  Cantidad_entregada float
+  Unidad_de_medida float
+}
+
+Table FasesProduccion_Preinoculo {
+  Lote integer
+  Fecha_hora_inicio timestamp
+  Fecha_hora_fin timestamp
+  PH_linea1 float
+  PH_linea2 float
+  PH_linea3 float
+  Turbidez_linea1 float
+  Turbidez_linea2 float
+  Turbidez_linea3 float
+  Linea1_utilizada binary
+  Linea2_utilizada binary
+  Linea3_utilizada binary
+}
+
+Table FasesProduccion_Inoculo {
+  Lote integer
+  ID_biorreactor integer
+  Fecha_hora_inicio timestamp
+  Fecha_hora_fin timestamp
+  Volumen_cultivo float
+  Turbidez_inicio float
+  Turbidez_final float
+  Viabilididad_final integer
+}
+
+Table FasesProduccion_CultivosProductivos {
+  Lote integer
+  Orden_encadenado integer
+  Lote_parental binary
+  ID_biorreactor integer
+  Fecha_hora_inicio timestamp
+  Fecha_hora_fin timestamp
+  Volumen_inoculo float
+  Turbidez_inicio float
+  Turbidez_final float
+  Viabilididad_final integer
+  ID_centrifuga integer
+  Centrifugacion1_turbidez float
+  Centrifugacion2_turbidez float
+  Producto1 float
+  Producto2 float
+}
+
+Table biorreactorXXXX {
+  DateTime timestamp
+  xxx_Agitation_PV float
+  xxx_Air_Sparge_PV float
+  xxx_Biocontainer_Preassure_PV float
+  xxx_DO_1_PV float
+  xxx_DO_2_PV float
+  xxx_Gas_Overlay_PV float
+  xxx_Load_Cell_Net_PV float
+  xxx_pH_1_PV float
+  xxx_pH_2_PV float
+  xxx_PUMP_1_PV float
+  xxx_PUMP_1_TOTAL float
+  xxx_PUMP_2_PV float
+  xxx_PUMP_2_TOTAL float
+  xxx_Single_Use_DO_PV float
+  xxx_Single_Use_pH_PV float
+  xxx_Temperatura_PV float
+}
+
+Table CineticosIPC_Inoculos {
+  Lote integer
+  Fecha timestamp
+  Turbidez float
+  Viabilidad float
+}
+
+Table CineticosIPC_CultivosFinales {
+  lote integer
+  Fecha timestamp
+  Turbidez float
+  Viabilidad floay
+  Glucosa float
+}
+
+Table CineticosIPC_Centrifugacion {
+  Lote integer
+  Centrifuga integer
+  Centrifugada integer
+  Volumen_centrifugado float
+  Turbidez float
+}
+
+Table CentrifugaXXXX {
+  DateTime timestamp
+  xxx_CTF0101_EN_Parcial integer
+  xxx_CTF0101_EN_Total integer
+  xxx_D01780551_PV binary
+  xxx_D01906041_PV float
+  xxx_D01906047_PV float
+  xxx_D01906503_PV float
+  xxx_D01919022_PV float
+
+}
+
+Table HorasInicioFinCentrifuga {
+  Equipo integer
+  Operacion integer
+  Orden integer
+  DateValue timestamp
+}
+
+Table MovimientosComponentes {
+  Lote integer
+  Material integer
+  Lote_Interno integer
+  Lote_Proveedor integer
+  Qty float
+  Fecha_recepcion timestamp
+  Fecha_traslado timestamo
+}
+
+Table TemperaturasYHumedades {
+  DateTime timestamo
+  06299_TI1302_PV float
+  06299_MI1302_PV float
+  06299_TI1402_PV float
+  06299_MI1402_PV float
+  07633_TI0601_PV float
+  07633_HI0101_PV float
+  07781_TI1501_PV float
+  07781_MI1501_PV float
+}
+
+
+
+Table users {
+  id integer [primary key]
+  username varchar(50)
+  role varchar(50)
+  created_at timestamp
+}
+
+Table follows {
+  id integer [primary key]
+  following_user_id integer
+  followed_user_id integer
+}
+
+Ref: users.id < follows.following_user_id
+Ref: users.id < follows.followed_user_id
+
+
+
+
+
+
+
+
+
+
+
+

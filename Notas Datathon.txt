@@ -1,0 +1,101 @@
+Notas Datathon
+-----------------------------------------------------------
+
+- Producción de Antígeno para desarrollo de vacunas
+
+- Fases del proceso: 
+
+  - Inóculo
+  - Cultivo Productivo
+  - Centrifugación 1
+  - Centrifugación 2
+
+- OF = Orden de fabricación
+
+- Existencia de lotes encadenados:: si el título del cultivo es suficiente, una parte del cultivo no se centrifuga, se deja en el mismo biorreactor, y se vuelve a introducir medio de cultivo para iniciar un nuevo cultivo. Este segundo cultivo es una nueva OF, donde los datos de las fases anteriores coincidirán con la OF inicial.
+
+- El objetivo es predecir la concentración del producto 1 en el antígeno final después de todas las fases. Esto se hace para saber que parámetros que tienen más impacto sobre el título del producto.
+
+- 2 tipos de tablas, de Datos de Lote y Datos de Evolución:
+  - Datos de lote: cada fila corresponde a un lote
+  - Datos de Evolución: cada fila corresponde a una observación en un tiempo concreto dentro de la ejecución de una lote.
+
+---------------------------------------------
+TRAIN - DATASETS
+
+1. Dataset Información General (OF 123456.xls)
+
+-> El antígeno de estudio se identifica con el código 123456. En la tabla “OF 123456” hay el listado de las OF de estudio, las OF o lotes que no estén en esta tabla no se deben tener en cuenta
+
+
+2. Dataset Fases del Proceso: Preinóculo, Inóculo y Cultivo Final (Fases producción.xls)
+
+	2.a Preinóculo: En la fase de preinóculo, se hace crecer el mismo microrganismo en 3 frascos diferentes. Para la fase de inoculación, se seleccionan los dos frascos con el pH más bajo, y se utilizan para esta fase. El tercer frasco se desecha.
+
+	2.b. Inóculo
+
+        2.c. Cultivos Productivos
+
+NOTA: Tanto en la fase de inóculo como en la de cultivos productivos, para relacionar este dataset con los datasets de Biorreactores tendremos que hacerlo a partir del ID biorreactor y las fechas/horas de inicio y fin.
+
+3. Datasets Biorrectores (Biorreactor XXXXX.xls) SON 3 DATASETS 
+
+NOTA: Los frascos de preinóculo seleccionados se introducen, junto con medio de cultivo, en un biorreactor de pequeño tamaño (códigos 13171, 13172, 14618).
+
+NOTA: Una vez completado el crecimiento del inóculo se traspasa el volumen necesario a un Biorreactor de producción (códigos 13169, 13170, 14614, 14615, 14616, 14617). Los datos a tiempo real de estos equipos son los mismos que en los biorreactores de pequeño tamaño (ver tabla anterior).
+
+4. Dataset Cinéticos IPC (Cinéticos IPC. xls)
+
+NOTA: 3 pestañas
+
+	4.a Pestaña Inóculos
+	
+	4.b Pestaña Cultivos Finales
+
+	4.c Pestaña Centrifugación
+
+4. Datasets Fase de Centrifugación (Centrifuga XXXXX xls / Horas Inicio fin centrifugas.xls) SON 3 DATASETS 
+
+NOTA: El producto resultante de la fase de cultivo se centrifuga dos veces. Primero se centrifuga todo el cultivo (centrifugación 1), luego se diluye el producto centrifugado y se vuelve a centrifugar (centrifugación 2). Las dos centrifugaciones se realizan en la misma centrífuga. Los códigos de las centrífugas son: 12912, 14246, 17825.
+
+NOTA: El archivo ”Horas inicio fin centrifugas.xlsx” contiene información sobre los tiempos de inicio/fin de esta fase. Puede haber producciones de otros materiales intercalados que no son OF del material de estudio (123456).
+
+5. Dataset Materias Primas Utilizadas (Movimientos componentes.xls)
+
+NOTA: Estas materias primas se compran a proveedor, y se identifican con un Lote de proveedor.
+
+NOTA: Un mismo Lote de proveedor puede corresponder a varios Lotes internos si se recepcionan en días diferentes.
+
+NOTA: Para un mismo lote participan distintos materiales y de cada material se pueden usar distintos lotes para completar la cantidad necesaria.
+
+6. Dataset Temperaturas y Humedades (Temperaturas y humedades.xls)
+
+NOTA: Contiene información respecto a las condiciones ambientales de los almacenes y las salas de producción.
+
+---------------------------------------------
+TEST - DATASETS
+
+Se proporcionará los mismos datasets que para el entrenamiento acabados en “_test” pero no se dispondrá de los datos producto 1 y producto 2, recordemos que el producto 1 es la variable target del reto.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	    
+
+
+
+
+
